@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f1f1ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121310" media="(prefers-color-scheme: dark)">
+<title>MathMADics</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23bcee29'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-weight='600' fill='%231c1e0f'%3E%E2%88%91%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="math-sprint-v3.css">
+</head>
+<body>
+<header class="appbar" id="appbar">
+  <div class="brand"><span class="brand-mark">∑</span><span class="brand-word"><span class="wm-i">MATH</span><br><span class="wm-i">MAD</span>ics</span></div>
+  <div class="header-tools">
+    <button class="controlbtn account-chip" id="btn-account" hidden>Sign in</button>
+    <button class="helpbtn" id="btn-help" aria-label="How scoring works">?</button>
+    <button class="controlbtn" id="btn-sound" aria-pressed="false">Sound off</button>
+  </div>
+  <nav class="mainnav" aria-label="Main navigation">
+    <button data-nav="#scr-home" class="active">Home</button>
+    <button data-nav="#scr-results">Results</button>
+    <button data-nav="#scr-setup">Settings</button>
+  </nav>
+</header>
+<div class="wrap">
+
+  <!-- HOME -->
+  <div class="screen active" id="scr-home">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">It's Just a Math Quiz; It's Simply...</div>
+        <h1><span class="wm-i">MATH</span><br><span class="wm-i">MAD</span>ics</h1>
+        <p class="tagline">A 2–Minute Journey into Your Computational Brain.</p>
+         <p class="tagline">Add, Subtract, Multiply, Divide, Win, Lose, Improve, Impress.</p>
+        <div class="hero-actions">
+          <button class="arcade-btn primary" id="btn-home-start">Play</button>
+          <button class="arcade-btn secondary daily-btn" id="btn-daily">Daily challenge</button>
+          <button class="arcade-btn secondary" id="btn-practice">Practice</button>
+        </div>
+      </div>
+    </section>
+    <div class="quick-settings" aria-label="Quick game settings">
+      <button class="quick-chip" id="quick-players"><span>Mode · </span><strong id="home-mode">Solo sprint</strong></button>
+      <button class="quick-chip" id="quick-diff"><span>Level · </span><strong id="home-diff">Easy</strong></button>
+      <button class="quick-chip" id="btn-home-settings"><span>More · </span><strong>Settings</strong></button>
+    </div>
+    <div class="challenge-note" id="challenge-note"></div>
+    <div class="home-strip" aria-label="Your scores">
+      <div class="mini-card">Last result<strong id="home-last">No games yet</strong></div>
+      <div class="mini-card">Best at these settings<strong id="home-best">—</strong></div>
+      <div class="mini-card">Today<strong id="home-today">Daily ready</strong></div>
+    </div>
+  </div>
+
+  <!-- PRACTICE -->
+  <div class="screen" id="scr-practice">
+    <div class="page-heading">
+      <div class="eyebrow">No pressure</div>
+      <h1>Practice</h1>
+      <p>Pick how long you want to play. Practice rounds never affect your high
+         scores or the global leaderboard — they are just for warming up.</p>
+    </div>
+    <div class="card">
+      <div class="setting-group wide">
+        <div class="label">Round length</div>
+        <div class="seg" id="seg-practice-time">
+          <button data-v="30">30 seconds</button>
+          <button data-v="60" class="on">1 minute</button>
+          <button data-v="120">2 minutes</button>
+          <button data-v="300">5 minutes</button>
+        </div>
+      </div>
+      <div class="setting-group wide">
+        <div class="label">Difficulty</div>
+        <div class="seg" id="seg-practice-diff">
+          <button data-v="easy" class="on">Easy</button>
+          <button data-v="medium">Medium</button>
+          <button data-v="hard">Hard</button>
+        </div>
+      </div>
+      <button class="startbtn" id="btn-practice-start">Start practice →</button>
+      <div class="rules">Nothing here is saved to the leaderboard.</div>
+    </div>
+    <div class="btnrow">
+      <button class="btn-ghost" id="btn-practice-back">Back to home</button>
+    </div>
+  </div>
+
+  <!-- SETUP -->
+  <div class="screen" id="scr-setup">
+    <div class="page-heading">
+      <div class="eyebrow">Build your challenge</div>
+      <h1>Game settings</h1>
+      <p>Choose the rules. You can come back here any time.</p>
+    </div>
+    <div class="card">
+      <div class="setting-group wide">
+        <div class="label">Players</div>
+        <div class="seg" id="seg-players">
+          <button data-v="1" class="on" aria-pressed="true">1 Player</button>
+          <button data-v="2" aria-pressed="false">2 Players</button>
+        </div>
+        <div class="names" id="namerow">
+          <input id="name1" placeholder="Player 1 name" maxlength="14">
+          <input id="name2" placeholder="Player 2 name" maxlength="14">
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="label">Starting difficulty</div>
+        <div class="seg" id="seg-diff">
+          <button data-v="easy" class="on">Easy <em>×1</em></button>
+          <button data-v="medium">Medium <em>×1.5</em></button>
+          <button data-v="hard">Hard <em>×2.2</em></button>
+        </div>
+      </div>
+      <button class="startbtn" id="btn-start">Start game →</button>
+      <ul class="rules">
+        <li>Correct answers score points (harder = more, plus speed and streak bonuses)</li>
+        <li>Wrong answers cost points; passing costs 4 seconds</li>
+        <li>Difficulty increases with each question</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PLAY -->
+  <div class="screen" id="scr-play">
+    <div class="playtop">
+      <button class="quitbtn" id="btn-quit">Quit round</button>
+      <div class="round-controls">
+        <button class="controlbtn" id="btn-play-sound" aria-pressed="false">Sound off</button>
+        <button class="controlbtn" id="btn-pause">Pause</button>
+      </div>
+    </div>
+    <div class="hud">
+      <div class="stat"><div class="hud-player-name" id="hud-player">Your score</div><div class="v" id="hud-score">0</div></div>
+      <div class="stat"><div class="v" id="hud-streak">0</div><div class="k">Streak</div></div>
+      <div class="stat"><div class="v" id="hud-count">0</div><div class="k">Answered</div></div>
+    </div>
+    <div class="timetext" id="timetext">1:00</div>
+    <div class="timerbar"><div class="fill" id="timerfill" style="width:100%"></div></div>
+    <div class="lvlchip" id="lvlchip" aria-live="polite">Level 1</div>
+    <div class="qcard" id="qcard" aria-labelledby="qtext">
+      <div class="qtext" id="qtext">3 + 4 = ?</div>
+      <div class="feedback" id="feedback" aria-live="polite" aria-atomic="true"></div>
+      <div class="options" id="options"></div>
+      <button class="passbtn" id="btn-pass">Pass (−4 seconds) · P</button>
+    </div>
+    <div class="hint" id="playhint"></div>
+  </div>
+
+  <!-- HANDOFF -->
+  <div class="screen" id="scr-handoff">
+    <div class="card handoff">
+      <h2 id="handoff-title">Pass to Player 2</h2>
+      <p id="handoff-text">Same questions, same clock. No peeking at Player 1's answers!</p>
+      <button class="startbtn" id="btn-p2start">I'm ready — start!</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="scr-results">
+    <div class="page-heading">
+      <div class="eyebrow">The final numbers</div>
+      <h1 id="res-title">Results</h1>
+    </div>
+    <div class="empty-results" id="results-empty">
+      <div class="empty-icon">🏁</div>
+      <h2>No finish line crossed yet</h2>
+      <p>Play a round and your latest result will live here.</p>
+      <button class="arcade-btn primary" id="btn-empty-start">Start game →</button>
+    </div>
+    <div id="results-content" style="display:none">
+    <div class="practice-note" id="practice-note" style="display:none">
+      Head to head — solo rounds are the ones that count towards high scores and the leaderboard.
+    </div>
+    <div class="results-hero">
+      <div class="newbest" id="newbest" style="display:none">★ New personal best! ★</div>
+      <div class="winner" id="winner" style="display:none"></div>
+      <div class="score-arena" id="score-arena">
+        <div class="player-result" id="res-p1">
+          <span class="player-badge" id="res-p1-badge">P1</span>
+          <span class="player-name" id="res-p1-name">Player 1</span>
+          <span class="player-score" id="res-p1-score">0</span>
+          <div class="player-stats" id="res-p1-stats"></div>
+        </div>
+        <div class="versus" id="res-versus">VS</div>
+        <div class="player-result p2" id="res-p2">
+          <span class="player-badge" id="res-p2-badge">P2</span>
+          <span class="player-name" id="res-p2-name">Player 2</span>
+          <span class="player-score" id="res-p2-score">0</span>
+          <div class="player-stats" id="res-p2-stats"></div>
+        </div>
+      </div>
+      <div class="bigscore sr-only" id="res-score">0</div>
+      <div class="subscore" id="res-sub"></div>
+      <div class="game-played" aria-label="Game played">
+        <div><span class="meta-label">Difficulty</span><span class="meta-value" id="res-game-diff">Easy</span></div>
+        <div><span class="meta-label">Time</span><span class="meta-value" id="res-game-time">2 minutes</span></div>
+        <div><span class="meta-label">Operations</span><span class="meta-value" id="res-game-ops">Mixed</span></div>
+        <div><span class="meta-label">Answer type</span><span class="meta-value" id="res-game-input">Multiple choice</span></div>
+      </div>
+      <details class="result-detail">
+        <summary>See the full breakdown</summary>
+        <table id="res-table"></table>
+      </details>
+    </div>
+    <div class="card" id="top-card" hidden>
+      <div class="label">Top 10 scores</div>
+      <div class="cloud-bucket">Highest single rounds anyone has played</div>
+      <table id="top-table"></table>
+      <div class="hs-empty" id="top-empty" hidden>No scores posted yet. Play a ranked round to start the board.</div>
+      <div class="cloud-status" id="top-status" aria-live="polite"></div>
+    </div>
+    <div class="card" id="cloud-card" hidden>
+      <div class="label">Global leaderboard</div>
+      <div class="cloud-bucket" id="cloud-bucket"></div>
+      <div class="claim-banner" id="claim-banner" hidden>
+        <div class="claim-copy">
+          <strong id="claim-title">Claim a spot on the leaderboard</strong>
+          <span id="claim-sub">No password needed — Google, or a link sent to your email.</span>
+        </div>
+        <button class="claim-btn" id="btn-claim">Claim my spot</button>
+      </div>
+      <table id="lb-table"></table>
+      <div class="hs-empty" id="lb-empty" hidden>No one has posted a score for these settings yet.</div>
+      <div class="cloud-status" id="cloud-status" aria-live="polite"></div>
+    </div>
+    <div class="card" id="history-card" hidden>
+      <div class="label">Your last 10 games</div>
+      <table id="history-table"></table>
+      <div class="hs-empty" id="history-empty" hidden>No rounds recorded yet. Your next one lands here.</div>
+      <div class="cloud-status" id="history-status" aria-live="polite"></div>
+    </div>
+    <div class="learning-grid" id="learning-grid">
+      <div class="card insight-card">
+        <div class="label">Your pattern</div>
+        <div class="insight-lead" id="insight-lead">Play a round to reveal an insight.</div>
+        <div class="insight-copy" id="insight-copy"></div>
+      </div>
+      <div class="card review-card">
+        <div class="label">Review your misses</div>
+        <div class="miss-list" id="miss-list"></div>
+      </div>
+    </div>
+    <div class="share-row">
+      <button class="share-btn" id="btn-share">Share this challenge</button>
+    </div>
+    <div class="share-status" id="share-status" aria-live="polite"></div>
+    <div class="btnrow">
+      <button class="btn-primary" id="btn-again">Play again</button>
+      <button class="btn-ghost" id="btn-settings">Change settings</button>
+    </div>
+    </div>
+  </div>
+
+</div>
+<footer class="sitefoot">
+  <span>Created by <strong>Payman Roghani</strong></span>
+  <span aria-hidden="true">·</span>
+  <span>&copy; <span id="foot-year">2026</span> All rights reserved</span>
+</footer>
+<div class="countdown" id="countdown" role="status" aria-live="assertive" aria-label="Round starting"></div>
+<div class="modal-layer" id="pause-modal" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+  <div class="modal">
+    <h2 id="pause-title">Round paused</h2>
+    <p>The clock is stopped. Take a breath.</p>
+    <div class="modal-actions">
+      <button class="modal-primary" id="btn-resume">Resume</button>
+      <button class="modal-ghost" id="btn-pause-quit">Quit</button>
+    </div>
+  </div>
+</div>
+<div class="modal-layer" id="quit-modal" role="dialog" aria-modal="true" aria-labelledby="quit-title">
+  <div class="modal">
+    <h2 id="quit-title">Leave this round?</h2>
+    <p>Your unfinished score will not be saved.</p>
+    <div class="modal-actions">
+      <button class="modal-ghost" id="btn-quit-cancel">Keep playing</button>
+      <button class="modal-danger" id="btn-quit-confirm">Quit round</button>
+    </div>
+  </div>
+</div>
+<div class="modal-layer" id="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+  <div class="modal scoring-modal">
+    <button class="modal-close" id="btn-help-close" aria-label="Close scoring help">×</button>
+    <h2 id="help-title">How scoring works</h2>
+    <ul class="scoring-rules">
+      <li>Correct answers score points, plus speed and streak bonuses</li>
+      <li>Wrong answers cost points; passing costs 4 seconds</li>
+      <li>Difficulty increases with each question</li>
+    </ul>
+    <div class="score-formula">
+      <span>Base score</span>
+      <strong>Question level × difficulty multiplier</strong>
+    </div>
+    <p>Easy starts at Level 1, Medium at Level 3, and Hard at Level 5. Harder
+       levels also pay more per answer — Easy ×1, Medium ×1.5, Hard ×2.2 — so
+       every difficulty competes on the same leaderboard.</p>
+    <p><strong>Practice</strong> lets you play a 30-second, 1-minute, 2-minute or
+       5-minute round at any difficulty. Practice rounds are never saved to your
+       high scores or the global leaderboard, so use them to warm up freely.
+       Only 2-minute solo rounds started with Play or Daily challenge are ranked.</p>
+  </div>
+</div>
+<div class="modal-layer" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="modal auth-modal">
+    <button class="modal-close" id="btn-auth-close" aria-label="Close">×</button>
+    <h2 id="auth-title">Claim your spot</h2>
+    <div id="auth-signed-out">
+      <p>Pick a name for the leaderboard. Everything you have scored on this device comes with you.</p>
+      <button class="auth-google" id="btn-google">Continue with Google</button>
+      <div class="auth-or"><span>or</span></div>
+      <form class="auth-email" id="form-email">
+        <input type="email" id="auth-email-input" placeholder="you@example.com" required autocomplete="email">
+        <button type="submit" class="modal-primary">Email me a link</button>
+      </form>
+      <p class="auth-fine">No password, ever. Your email is only used to sign you in — it is never shown on the leaderboard.</p>
+    </div>
+    <div id="auth-signed-in" hidden>
+      <p>You are signed in and your scores are saved to the cloud.</p>
+      <div class="auth-whoami" id="auth-whoami"></div>
+      <div class="modal-actions">
+        <button class="modal-ghost" id="btn-rename">Change name</button>
+        <button class="modal-ghost" id="btn-signout">Sign out</button>
+      </div>
+    </div>
+    <div class="auth-status" id="auth-status" aria-live="polite"></div>
+  </div>
+</div>
+<div class="modal-layer" id="name-modal" role="dialog" aria-modal="true" aria-labelledby="name-title">
+  <div class="modal">
+    <h2 id="name-title">Pick your leaderboard name</h2>
+    <p>This is the only thing other players see. Two to sixteen characters.</p>
+    <form id="form-name">
+      <input id="name-input" maxlength="16" placeholder="e.g. Sam" required autocomplete="nickname">
+      <div class="modal-actions">
+        <button type="submit" class="modal-primary">Save name</button>
+      </div>
+    </form>
+    <div class="auth-status" id="name-status" aria-live="polite"></div>
+  </div>
+</div>
+<div class="modal-layer" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="modal">
+    <h2 id="confirm-title">Confirm your email</h2>
+    <p>You opened this link in a different browser to the one that requested it. Enter the address you used and we will finish signing you in.</p>
+    <form id="form-confirm">
+      <input type="email" id="confirm-input" placeholder="you@example.com" required autocomplete="email">
+      <div class="modal-actions">
+        <button type="submit" class="modal-primary">Finish sign-in</button>
+      </div>
+    </form>
+    <div class="auth-status" id="confirm-status" aria-live="polite"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ================= LOGIC START ================= */
+
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function() {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function randInt(R, min, max) { return Math.floor(R() * (max - min + 1)) + min; }
+function shuffle(arr, R) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(R() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Operand ranges per level (1..7). For sub: a = x+y, b = x, answer = y.
+// For div: dividend = d*q, divisor = d, answer = q.
+const ADD_RANGES = {
+  1: [[2, 9],   [2, 9]],
+  2: [[10, 49], [3, 9]],
+  3: [[12, 99], [12, 99]],
+  4: [[25, 99], [25, 99]],
+  5: [[100, 499], [25, 99]],
+  6: [[100, 999], [100, 999]],
+  7: [[250, 999], [250, 999]]
+};
+// Subtraction grows by answer size and number of digits, rather than merely
+// showing larger operands with consistently tiny differences.
+const SUB_RANGES = {
+  1: [[2, 9],     [1, 9]],
+  2: [[10, 49],   [2, 19]],
+  3: [[12, 99],   [12, 49]],
+  4: [[25, 99],   [25, 99]],
+  5: [[100, 499], [25, 99]],
+  6: [[100, 999], [100, 499]],
+  7: [[250, 999], [250, 999]]
+};
+const MUL_RANGES = {
+  1: [[2, 5],  [2, 9]],
+  2: [[3, 9],  [3, 9]],
+  3: [[4, 9],  [6, 12]],
+  4: [[3, 9],  [13, 29]],
+  5: [[6, 12], [11, 19]],
+  6: [[11, 19],[11, 29]],
+  7: [[12, 49],[12, 29]]
+};
+const OP_SYMBOL = { add: "+", sub: "−", mul: "×", div: "÷" };
+const MAX_LEVEL = 7;
+
+function makeQuestion(R, op, level) {
+  const L = Math.max(1, Math.min(MAX_LEVEL, level));
+  let a, b, answer;
+  if (op === "add") {
+    const [[a1, a2], [b1, b2]] = ADD_RANGES[L];
+    a = randInt(R, a1, a2); b = randInt(R, b1, b2);
+    if (R() < 0.5) { const t = a; a = b; b = t; }
+    answer = a + b;
+  } else if (op === "sub") {
+    const [[b1, b2], [d1, d2]] = SUB_RANGES[L];
+    b = randInt(R, b1, b2);
+    answer = randInt(R, d1, d2);
+    a = b + answer;
+  } else if (op === "mul") {
+    const [[a1, a2], [b1, b2]] = MUL_RANGES[L];
+    a = randInt(R, a1, a2); b = randInt(R, b1, b2);
+    if (R() < 0.5) { const t = a; a = b; b = t; }
+    answer = a * b;
+  } else { // div
+    const [[d1, d2], [q1, q2]] = MUL_RANGES[L];
+    const d = randInt(R, d1, d2), q = randInt(R, q1, q2);
+    a = d * q; b = d; answer = q;
+  }
+  return { op, a, b, answer, level: L };
+}
+
+function digits(n) { return String(Math.abs(n)).split("").map(Number); }
+function numLen(n) { return String(Math.abs(n)).length; }
+
+// Column-wise addition with no carrying: 35+57 -> 82 (real: 92)
+function noCarrySum(a, b) {
+  const da = digits(a).reverse(), db = digits(b).reverse();
+  const n = Math.max(da.length, db.length);
+  let out = 0, mult = 1;
+  for (let i = 0; i < n; i++) {
+    out += (((da[i] || 0) + (db[i] || 0)) % 10) * mult;
+    mult *= 10;
+  }
+  return out;
+}
+// Column-wise |difference| with no borrowing: 52-35 -> 23 (real: 17)
+function noBorrowDiff(a, b) {
+  const da = digits(a).reverse(), db = digits(b).reverse();
+  const n = Math.max(da.length, db.length);
+  let out = 0, mult = 1;
+  for (let i = 0; i < n; i++) {
+    out += Math.abs((da[i] || 0) - (db[i] || 0)) * mult;
+    mult *= 10;
+  }
+  return out;
+}
+// Swap last two digits: 87 -> 78
+function transposeLast(n) {
+  const s = String(n);
+  if (s.length < 2) return n;
+  const arr = s.split("");
+  const i = arr.length - 2;
+  [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+  return parseInt(arr.join(""), 10);
+}
+
+function distractorCandidates(q) {
+  const { op, a, b, answer } = q;
+  const c = [];
+  if (op === "add") {
+    c.push(noCarrySum(a, b), answer + 10, answer - 10, transposeLast(answer), answer + 20, answer - 20);
+    if (answer >= 150) c.push(answer + 100, answer - 100);
+  } else if (op === "sub") {
+    c.push(noBorrowDiff(a, b), answer + 10, answer - 10, transposeLast(answer), answer + 20, answer - 20, answer + 1, answer - 1);
+  } else if (op === "mul") {
+    c.push((a + 1) * b, (a - 1) * b, a * (b + 1), a * (b - 1), answer + 10, answer - 10, transposeLast(answer), answer + a, answer - b);
+  } else { // div
+    c.push(answer + 1, answer - 1, answer + 2, answer - 2, answer + 10, answer - 10, transposeLast(answer));
+  }
+  return c;
+}
+
+function buildOptions(R, q) {
+  const ans = q.answer;
+  const seen = new Set([ans]);
+  const valid = [];
+  for (const v of distractorCandidates(q)) {
+    if (Number.isInteger(v) && v >= 1 && !seen.has(v)) { seen.add(v); valid.push(v); }
+  }
+  // Prefer distractors with the same digit count as the answer.
+  const mixed = shuffle(valid, R);
+  const same = mixed.filter(v => numLen(v) === numLen(ans));
+  const diff = mixed.filter(v => numLen(v) !== numLen(ans));
+  const picks = same.concat(diff).slice(0, 3);
+  // Fill if still short (rare): offsets that stay plausible per op.
+  const fills = (q.op === "add" || q.op === "sub")
+    ? [30, -30, 40, -40, 50, 60, 70, 100]
+    : [3, -3, 4, -4, 5, 6, 7, 8, 9, 11];
+  for (const d of fills) {
+    if (picks.length >= 3) break;
+    const v = ans + d;
+    if (v >= 1 && !seen.has(v)) { seen.add(v); picks.push(v); }
+  }
+  return shuffle([ans].concat(picks), R);
+}
+
+// Level ramps by question index; both players see the identical sequence.
+function levelForIndex(index, startLevel, durationSec) {
+  const qPerStep = Math.max(4, Math.round(durationSec / 9));
+  return Math.max(1, Math.min(MAX_LEVEL, startLevel + Math.floor(index / qPerStep)));
+}
+
+// Expected solve time per level, in ms. Base points and the speed window are
+// both derived from these, so a level's reward tracks what it actually costs.
+// Recalibrate from median answerMs of correct answers in the learning history.
+const PAR_MS = { 1: 1500, 2: 2000, 3: 2600, 4: 3300, 5: 4300, 6: 5600, 7: 7200 };
+const POINTS_PER_SEC = 10;
+
+function parFor(level) {
+  return PAR_MS[Math.max(1, Math.min(MAX_LEVEL, level))];
+}
+
+// Harder settings pay more per answer, which is what lets every difficulty
+// share one leaderboard: the ladder below is tuned so that expected score rises
+// with difficulty at every skill level (roughly 1.0 / 1.4 / 1.9 in practice).
+const DIFF_MULTIPLIER = { easy: 1, medium: 1.5, hard: 2.2 };
+function difficultyMultiplier(diff) { return DIFF_MULTIPLIER[diff] || 1; }
+
+function basePoints(level, mult = 1) {
+  return Math.round(POINTS_PER_SEC * parFor(level) / 1000 * mult);
+}
+
+// Measured against the level's par so that "fast" stays reachable at level 7,
+// where an absolute 2s window never could be.
+function speedBonus(level, answerMs) {
+  const par = parFor(level);
+  const fast = par * 0.6, slow = par * 1.6;
+  if (answerMs <= fast) return 0.5;
+  if (answerMs >= slow) return 0;
+  return 0.5 * (slow - answerMs) / (slow - fast);
+}
+
+// Caps at +0.5 on a streak of 5. A streak of 11 was only attainable at the
+// accuracy low levels allow, which made it an easy-questions-only bonus.
+function streakBonus(streakAfter) {
+  return 0.125 * Math.min(Math.max(streakAfter - 1, 0), 4);
+}
+
+function scoreCorrect(level, streakAfter, answerMs, mult = 1) {
+  const base = basePoints(level, mult);
+  return Math.round(base * (1 + speedBonus(level, answerMs) + streakBonus(streakAfter)));
+}
+// Gains are multiplied by bonuses and losses are not, so a full-base penalty
+// hurts most exactly where bonuses are weakest.
+function scoreWrong(level, mode, mult = 1) {
+  const base = basePoints(level, mult);
+  return mode === "mc" ? -Math.round(base * 0.5) : -Math.round(base * 0.3);
+}
+
+/* ================= LOGIC END ================= */
+
+// ---------- App state ----------
+const DIFF_START = { easy: 1, medium: 3, hard: 5 };
+const PASS_COST_MS = 4000;
+const FEEDBACK_MIN_MS = 280;
+const CHALLENGE_VERSION = 4;
+// Bump whenever scoring changes: scores from different rules are not
+// comparable, so they must not share a high-score list or leaderboard bucket.
+// v4: ranked rounds went from 1 to 2 minutes, which roughly doubles reachable
+// scores, so it starts a fresh board rather than mixing with the 1-minute era.
+const SCORING_VERSION = 4;
+// Expose the current scoring version so the cloud module can scope its boards to
+// it even before the first round of a session is played.
+window.__scoringVersion = SCORING_VERSION;
+// Every ranked round is two minutes. Difficulty is reconciled by the score
+// multiplier so all three levels share one board, but round length cannot be
+// reconciled the same way — a longer round simply yields more answers — so it is
+// not an option.
+const ROUND_SECONDS = 120;
+// Practice rounds pick their own length and never touch the leaderboard. Head to
+// head is unranked too: two players cannot be ranked against each other.
+let practiceMode = false;
+let lastPractice = false;
+function isRanked() {
+  return cfg.players === 1 && !practiceMode;
+}
+const OP_LABEL = { add: "Addition", sub: "Subtraction", mul: "Multiplication", div: "Division" };
+
+const cfg = { players: 1, duration: ROUND_SECONDS, ops: ["add", "sub", "mul", "div"], diff: "easy", mode: "mc", names: ["Player 1", "Player 2"] };
+let round = null;
+let roundSeed = 0;
+let p1Result = null;
+let timerId = null;
+let countdownId = null;
+let countdownTimeoutId = null;
+let latestResult = null;
+let pendingChallengeSeed = null;
+let activeChallenge = false;
+let soundEnabled = false;
+let audioContext = null;
+
+const $ = s => document.querySelector(s);
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
+  $(id).classList.add("active");
+  const inRound = id === "#scr-play" || id === "#scr-handoff";
+  $("#appbar").style.display = inRound ? "none" : "flex";
+  document.querySelectorAll("[data-nav]").forEach(b => {
+    const active = b.dataset.nav === id;
+    b.classList.toggle("active", active);
+    b.setAttribute("aria-current", active ? "page" : "false");
+  });
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+}
+
+function initials(name) {
+  return name.trim().split(/\s+/).slice(0, 2).map(part => part[0] || "").join("").toUpperCase() || "?";
+}
+
+// Display scores with a true minus sign, matching the question text.
+function fmtScore(score) {
+  return String(score).replace("-", "−");
+}
+
+function randomSeed() {
+  return (Date.now() ^ (Math.random() * 0x7fffffff)) >>> 0;
+}
+
+function hashSeed(text) {
+  let hash = 2166136261;
+  for (let i = 0; i < text.length; i++) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function setSound(enabled, activate = false) {
+  soundEnabled = enabled;
+  try { localStorage.setItem("mathsprint_sound", enabled ? "1" : "0"); } catch (e) {}
+  for (const button of [$("#btn-sound"), $("#btn-play-sound")]) {
+    button.textContent = enabled ? "Sound on" : "Sound off";
+    button.setAttribute("aria-pressed", enabled ? "true" : "false");
+  }
+  if (enabled && activate) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (AudioCtx && !audioContext) audioContext = new AudioCtx();
+    if (audioContext?.state === "suspended") audioContext.resume();
+  }
+}
+
+function tone(frequency, duration = 0.08, delay = 0, volume = 0.035) {
+  if (!soundEnabled || !audioContext) return;
+  const start = audioContext.currentTime + delay;
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(frequency, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(volume, start + 0.008);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+  oscillator.start(start);
+  oscillator.stop(start + duration + 0.02);
+}
+
+function playSound(kind, milestone = false) {
+  if (kind === "correct") {
+    tone(620, 0.08);
+    tone(milestone ? 980 : 780, 0.1, 0.07);
+  } else if (kind === "wrong") {
+    tone(210, 0.14, 0, 0.045);
+  } else if (kind === "pass") {
+    tone(350, 0.08);
+  } else if (kind === "end") {
+    tone(520, 0.12);
+    tone(660, 0.12, 0.1);
+    tone(840, 0.16, 0.2);
+  }
+}
+
+function currentGameMeta() {
+  return {
+    difficulty: cfg.diff,
+    duration: cfg.duration,
+    operations: ["add", "sub", "mul", "div"],
+    mode: "mc",
+    players: cfg.players,
+    scoring: SCORING_VERSION,
+    practice: practiceMode,
+    ranked: isRanked()
+  };
+}
+
+function titleCase(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function formatDuration(seconds) {
+  return seconds < 60 ? `${seconds} seconds` : `${seconds / 60} minute${seconds === 60 ? "" : "s"}`;
+}
+
+function renderGameMeta(game = currentGameMeta()) {
+  const operations = game.operations || [];
+  const opText = operations.length === 4
+    ? "Mixed"
+    : operations.map(op => OP_SYMBOL[op]).join(" ");
+  const difficulty = game.difficulty || "easy";
+  $("#res-game-diff").textContent = `${titleCase(difficulty)} ×${difficultyMultiplier(difficulty)}`;
+  $("#res-game-time").textContent = formatDuration(game.duration || 60);
+  $("#res-game-ops").textContent = opText || "Mixed";
+  $("#res-game-input").textContent = "Multiple choice";
+}
+
+function updateHome() {
+  // The home screen always describes the ranked round the Play button starts.
+  practiceMode = false;
+  readSetup();
+  $("#home-mode").textContent = cfg.players === 2 ? "Head to head" : "Solo sprint";
+  $("#home-diff").textContent = titleCase(cfg.diff);
+  if (!latestResult) $("#home-last").textContent = "No games yet";
+  else if (latestResult.type === "solo") $("#home-last").textContent = `${fmtScore(latestResult.result.score)} points`;
+  else {
+    const { r1, r2 } = latestResult;
+    $("#home-last").textContent = `${r1.name} ${fmtScore(r1.score)} · ${r2.name} ${fmtScore(r2.score)}`;
+  }
+  // Personal best is cloud-only now; the Supabase module publishes it onto
+  // window.__cloudBest (and re-runs updateHome) once it has loaded your scores.
+  const best = typeof window.__cloudBest === "number" ? window.__cloudBest : null;
+  $("#home-best").textContent = best === null ? "—" : `${fmtScore(best)} points`;
+  const today = new Date().toISOString().slice(0, 10);
+  let dailyScore = null;
+  try { dailyScore = localStorage.getItem(`mathsprint_daily_${today}`); } catch (e) {}
+  $("#home-today").textContent = dailyScore === null ? "Daily ready" : `${fmtScore(dailyScore)} points`;
+}
+
+function saveLatest(data) {
+  latestResult = data;
+  try { localStorage.setItem("mathsprint_v3_latest_result", JSON.stringify(data)); } catch (e) {}
+  updateHome();
+}
+
+try {
+  latestResult = JSON.parse(localStorage.getItem("mathsprint_v3_latest_result") || "null");
+} catch (e) {
+  latestResult = null;
+}
+
+// ---------- Setup screen ----------
+function wireSeg(id, multi, onPick) {
+  const seg = $(id);
+  seg.addEventListener("click", e => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (multi) {
+      const on = seg.querySelectorAll("button.on");
+      if (btn.classList.contains("on") && on.length === 1) return; // keep at least one
+      btn.classList.toggle("on");
+    } else {
+      seg.querySelectorAll("button").forEach(b => b.classList.remove("on"));
+      btn.classList.add("on");
+    }
+    seg.querySelectorAll("button").forEach(b => {
+      b.setAttribute("aria-pressed", b.classList.contains("on") ? "true" : "false");
+    });
+    onPick();
+  });
+}
+function readSetup() {
+  if (practiceMode) {
+    // The practice screen carries its own length and difficulty, and is solo.
+    cfg.players = 1;
+    cfg.duration = parseInt($("#seg-practice-time button.on").dataset.v, 10);
+    cfg.diff = $("#seg-practice-diff button.on").dataset.v;
+  } else {
+    cfg.players = parseInt($("#seg-players button.on").dataset.v, 10);
+    cfg.duration = ROUND_SECONDS;
+    cfg.diff = $("#seg-diff button.on").dataset.v;
+  }
+  cfg.ops = ["add", "sub", "mul", "div"];
+  cfg.mode = "mc";
+  cfg.names = [
+    $("#name1").value.trim() || "Player 1",
+    $("#name2").value.trim() || "Player 2"
+  ];
+  $("#namerow").classList.toggle("show", cfg.players === 2);
+}
+wireSeg("#seg-players", false, readSetup);
+wireSeg("#seg-diff", false, readSetup);
+document.querySelectorAll(".seg button").forEach(b => {
+  b.setAttribute("aria-pressed", b.classList.contains("on") ? "true" : "false");
+});
+
+function selectSingle(id, value) {
+  const buttons = Array.from($(id).querySelectorAll("button"));
+  const target = buttons.find(button => button.dataset.v === String(value));
+  if (!target) return;
+  buttons.forEach(button => {
+    const selected = button === target;
+    button.classList.toggle("on", selected);
+    button.setAttribute("aria-pressed", selected ? "true" : "false");
+  });
+}
+
+function applyGameMeta(game) {
+  selectSingle("#seg-players", game.players || 1);
+  selectSingle("#seg-diff", game.difficulty || "easy");
+  readSetup();
+  updateHome();
+}
+
+function cycleSingle(id) {
+  const buttons = Array.from($(id).querySelectorAll("button"));
+  const current = buttons.findIndex(button => button.classList.contains("on"));
+  buttons[(current + 1) % buttons.length].click();
+  updateHome();
+}
+
+function launchGame(seed = null, challenge = false, practice = false) {
+  practiceMode = practice;
+  lastPractice = practice;
+  readSetup();
+  if (soundEnabled) setSound(true, true);
+  roundSeed = seed === null ? randomSeed() : seed >>> 0;
+  activeChallenge = challenge;
+  $("#challenge-note").classList.remove("show");
+  p1Result = null;
+  startRound(0);
+}
+
+$("#btn-start").addEventListener("click", () => {
+  const seed = pendingChallengeSeed;
+  pendingChallengeSeed = null;
+  launchGame(seed, seed !== null);
+});
+$("#btn-home-start").addEventListener("click", () => $("#btn-start").click());
+$("#btn-empty-start").addEventListener("click", () => $("#btn-start").click());
+$("#btn-home-settings").addEventListener("click", () => showScreen("#scr-setup"));
+$("#quick-players").addEventListener("click", () => cycleSingle("#seg-players"));
+$("#quick-diff").addEventListener("click", () => cycleSingle("#seg-diff"));
+$("#btn-daily").addEventListener("click", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  applyGameMeta({
+    players: 1,
+    duration: ROUND_SECONDS,
+    difficulty: "medium",
+    operations: ["add", "sub", "mul", "div"],
+    mode: "mc"
+  });
+  launchGame(hashSeed(`math-sprint-daily-${today}`), true);
+});
+wireSeg("#seg-practice-time", false, () => {});
+wireSeg("#seg-practice-diff", false, () => {});
+$("#btn-practice").addEventListener("click", () => showScreen("#scr-practice"));
+$("#btn-practice-back").addEventListener("click", () => {
+  updateHome();
+  showScreen("#scr-home");
+});
+$("#btn-practice-start").addEventListener("click", () => launchGame(null, false, true));
+$("#btn-p2start").addEventListener("click", () => startRound(1));
+
+// ---------- Round ----------
+function newStats() {
+  const counts = {};
+  for (const op of cfg.ops) counts[op] = { c: 0, w: 0, p: 0 };
+  return counts;
+}
+function startRound(playerIdx) {
+  clearInterval(timerId);
+  clearInterval(countdownId);
+  clearTimeout(countdownTimeoutId);
+  if (round?.advanceId) clearTimeout(round.advanceId);
+  round = {
+    player: playerIdx,
+    rng: mulberry32(roundSeed),
+    index: 0,
+    mult: difficultyMultiplier(cfg.diff),
+    remainingMs: cfg.duration * 1000,
+    score: 0, streak: 0, bestStreak: 0,
+    correct: 0, wrong: 0, passed: 0,
+    counts: newStats(),
+    history: [],
+    locked: true, over: false, paused: false,
+    feedbackPending: false, feedbackSkippableAt: 0,
+    advanceId: null, advanceDue: 0, advanceRemaining: 0,
+    q: null, qStart: 0, lastTick: 0, lastSecond: null
+  };
+  $("#hud-player").textContent = cfg.players === 2 ? cfg.names[playerIdx] : "Your score";
+  $("#options").style.display = "grid";
+  $("#playhint").textContent = "Keys 1–4 to answer · P to pass · press again to advance feedback";
+  showScreen("#scr-play");
+  updateHud();
+  updateTimer();
+  $("#qtext").textContent = "Get ready";
+  $("#feedback").textContent = "";
+  $("#options").innerHTML = "";
+  startCountdown();
+}
+
+function startCountdown() {
+  const overlay = $("#countdown");
+  const steps = ["3", "2", "1", "Go!"];
+  let i = 0;
+  const showStep = () => {
+    overlay.innerHTML = `<span>${steps[i]}</span>`;
+    overlay.classList.add("show");
+    i++;
+    if (i === steps.length) {
+      clearInterval(countdownId);
+      countdownTimeoutId = setTimeout(() => {
+        overlay.classList.remove("show");
+        if (!round || round.over) return;
+        round.locked = false;
+        nextQuestion();
+        round.lastTick = performance.now();
+        timerId = setInterval(tick, 100);
+      }, 500);
+    }
+  };
+  showStep();
+  countdownId = setInterval(showStep, 700);
+}
+
+function tick() {
+  if (!round || round.paused || round.over) return;
+  const now = performance.now();
+  round.remainingMs -= now - round.lastTick;
+  round.lastTick = now;
+  if (round.remainingMs <= 0) { round.remainingMs = 0; updateTimer(); endRound(); return; }
+  updateTimer();
+}
+function updateTimer() {
+  const s = Math.max(0, round.remainingMs) / 1000;
+  const m = Math.floor(s / 60);
+  const sec = Math.ceil(s % 60);
+  const shown = sec === 60 ? `${m + 1}:00` : `${m}:${String(sec).padStart(2, "0")}`;
+  $("#timetext").textContent = shown;
+  const pct = 100 * round.remainingMs / (cfg.duration * 1000);
+  const fill = $("#timerfill");
+  fill.style.width = pct + "%";
+  fill.classList.toggle("low", s <= 10);
+  const whole = Math.ceil(s);
+  if (s <= 10 && whole > 0 && whole !== round.lastSecond) {
+    tone(650 + (10 - whole) * 26, 0.045, 0, 0.02);
+  }
+  round.lastSecond = whole;
+}
+function updateHud() {
+  const sc = $("#hud-score");
+  sc.textContent = fmtScore(round.score);
+  sc.classList.toggle("neg", round.score < 0);
+  const st = $("#hud-streak");
+  st.textContent = round.streak >= 3 ? `${round.streak} 🔥` : round.streak;
+  st.classList.toggle("streak-hot", round.streak >= 3);
+  $("#hud-count").textContent = round.correct + round.wrong;
+}
+
+function nextQuestion() {
+  if (round.over) return;
+  if (round.advanceId) clearTimeout(round.advanceId);
+  round.advanceId = null;
+  round.feedbackPending = false;
+  const level = levelForIndex(round.index, DIFF_START[cfg.diff], cfg.duration);
+  const op = cfg.ops[Math.floor(round.rng() * cfg.ops.length)];
+  const q = makeQuestion(round.rng, op, level);
+  const opts = buildOptions(round.rng, q); // always consume RNG so sequences stay identical across modes/players
+  round.q = q;
+  round.index++;
+  const step = Math.max(4, Math.round(cfg.duration / 9));
+  const position = round.index % step;
+  const untilNext = position === 0 ? 0 : step - position;
+  $("#lvlchip").textContent = q.level < MAX_LEVEL
+    ? (untilNext === 0
+      ? `Level ${q.level} · Level ${q.level + 1} begins next`
+      : `Level ${q.level} · ${untilNext} question${untilNext === 1 ? "" : "s"} to Level ${q.level + 1}`)
+    : `Level ${q.level} · Maximum difficulty`;
+  $("#qtext").textContent = `${q.a} ${OP_SYMBOL[q.op]} ${q.b} = ?`;
+  $("#feedback").textContent = "";
+  $("#feedback").className = "feedback";
+  const box = $("#options");
+  box.innerHTML = "";
+  opts.forEach((v, i) => {
+    const b = document.createElement("button");
+    b.innerHTML = `<span class="key">${i + 1}</span>${v}`;
+    b.dataset.v = v;
+    b.addEventListener("click", () => submitAnswer(v, b));
+    box.appendChild(b);
+  });
+  round.qStart = performance.now();
+  round.locked = false;
+}
+
+function scheduleAdvance(delayMs) {
+  if (!round || round.over) return;
+  if (round.advanceId) clearTimeout(round.advanceId);
+  round.feedbackPending = true;
+  round.feedbackSkippableAt = performance.now() + FEEDBACK_MIN_MS;
+  round.advanceDue = performance.now() + delayMs;
+  round.advanceId = setTimeout(() => {
+    if (!round || round.over || round.paused) return;
+    nextQuestion();
+  }, delayMs);
+}
+
+function advanceFeedback() {
+  if (!round?.feedbackPending || !round.locked || round.over || round.paused) return false;
+  if (performance.now() < round.feedbackSkippableAt) return false;
+  if (round.advanceId) clearTimeout(round.advanceId);
+  round.advanceId = null;
+  round.feedbackPending = false;
+  nextQuestion();
+  return true;
+}
+
+function submitAnswer(value, btnEl) {
+  if (!round || round.locked || round.over) return;
+  round.locked = true;
+  const q = round.q;
+  const t = performance.now() - round.qStart;
+  const isCorrect = value === q.answer;
+  round.history.push({
+    op: q.op,
+    a: q.a,
+    b: q.b,
+    level: q.level,
+    given: value,
+    correctAnswer: q.answer,
+    answerMs: Math.round(t),
+    outcome: isCorrect ? "correct" : "wrong"
+  });
+  const fb = $("#feedback");
+  const qcard = $("#qcard");
+  qcard.classList.remove("flash-good", "flash-bad");
+  void qcard.offsetWidth; // restart animation
+  if (isCorrect) {
+    round.streak++;
+    round.bestStreak = Math.max(round.bestStreak, round.streak);
+    const pts = scoreCorrect(q.level, round.streak, t, round.mult);
+    round.score += pts;
+    round.correct++;
+    round.counts[q.op].c++;
+    const milestone = round.streak >= 3 && (round.streak === 3 || round.streak % 5 === 0);
+    fb.textContent = milestone ? `🔥 ${round.streak} streak! · +${pts}` : `✓ +${pts}`;
+    fb.classList.add("good");
+    qcard.classList.add("flash-good");
+    if (milestone) {
+      qcard.classList.remove("streak-pop");
+      void qcard.offsetWidth;
+      qcard.classList.add("streak-pop");
+    }
+    playSound("correct", milestone);
+    if (btnEl) btnEl.classList.add("picked-good");
+    scheduleAdvance(350);
+  } else {
+    round.streak = 0;
+    const pts = scoreWrong(q.level, "mc", round.mult);
+    round.score += pts;
+    round.wrong++;
+    round.counts[q.op].w++;
+    fb.textContent = `✗ ${pts} · answer was ${q.answer}`;
+    fb.classList.add("bad");
+    qcard.classList.add("flash-bad");
+    if (btnEl) {
+      btnEl.classList.add("picked-bad");
+      $("#options").querySelectorAll("button").forEach(b => {
+        if (parseInt(b.dataset.v, 10) === q.answer) b.classList.add("reveal");
+      });
+    }
+    playSound("wrong");
+    scheduleAdvance(900);
+  }
+  $("#options").querySelectorAll("button").forEach(b => b.disabled = true);
+  updateHud();
+}
+
+function passQuestion() {
+  if (!round || round.locked || round.over) return;
+  round.locked = true;
+  round.remainingMs -= PASS_COST_MS;
+  round.passed++;
+  round.counts[round.q.op].p++;
+  round.streak = 0;
+  round.history.push({
+    op: round.q.op,
+    a: round.q.a,
+    b: round.q.b,
+    level: round.q.level,
+    given: null,
+    correctAnswer: round.q.answer,
+    answerMs: Math.round(performance.now() - round.qStart),
+    outcome: "passed"
+  });
+  const fb = $("#feedback");
+  fb.textContent = `Passed · answer was ${round.q.answer} · −4s`;
+  fb.classList.add("warn");
+  updateHud();
+  if (round.remainingMs <= 0) { round.remainingMs = 0; updateTimer(); endRound(); return; }
+  updateTimer();
+  playSound("pass");
+  scheduleAdvance(700);
+}
+$("#btn-pass").addEventListener("click", passQuestion);
+
+function suspendRound() {
+  if (!round || round.over || round.paused || $("#countdown").classList.contains("show")) return false;
+  round.paused = true;
+  round.pausedAt = performance.now();
+  clearInterval(timerId);
+  if (round.feedbackPending) {
+    round.advanceRemaining = Math.max(0, round.advanceDue - performance.now());
+    if (round.advanceId) clearTimeout(round.advanceId);
+    round.advanceId = null;
+  }
+  return true;
+}
+
+function resumeRound() {
+  if (!round || round.over || !round.paused) return;
+  const pausedFor = performance.now() - round.pausedAt;
+  round.paused = false;
+  round.lastTick = performance.now();
+  if (round.qStart) round.qStart += pausedFor;
+  if (round.feedbackPending) {
+    const delay = Math.max(0, round.advanceRemaining);
+    round.feedbackSkippableAt = performance.now();
+    round.advanceDue = performance.now() + delay;
+    round.advanceId = setTimeout(() => {
+      if (!round.over && !round.paused) nextQuestion();
+    }, delay);
+  }
+  timerId = setInterval(tick, 100);
+}
+
+function abandonRound() {
+  clearInterval(timerId);
+  clearInterval(countdownId);
+  clearTimeout(countdownTimeoutId);
+  if (round?.advanceId) clearTimeout(round.advanceId);
+  $("#countdown").classList.remove("show");
+  $("#pause-modal").classList.remove("show");
+  $("#quit-modal").classList.remove("show");
+  if (round) round.over = true;
+  showScreen("#scr-home");
+  $("#btn-home-start").focus();
+}
+
+$("#btn-pause").addEventListener("click", () => {
+  if (!suspendRound()) return;
+  $("#pause-modal").classList.add("show");
+  $("#btn-resume").focus();
+});
+$("#btn-resume").addEventListener("click", () => {
+  $("#pause-modal").classList.remove("show");
+  resumeRound();
+  $("#btn-pause").focus();
+});
+$("#btn-quit").addEventListener("click", () => {
+  if (!round || round.over) return;
+  if (!round.paused && !suspendRound()) {
+    round.quitDuringCountdown = $("#countdown").classList.contains("show");
+    clearInterval(countdownId);
+    clearTimeout(countdownTimeoutId);
+    $("#countdown").classList.remove("show");
+    round.paused = true;
+    round.pausedAt = performance.now();
+  }
+  $("#quit-modal").classList.add("show");
+  $("#btn-quit-cancel").focus();
+});
+$("#btn-pause-quit").addEventListener("click", () => {
+  $("#pause-modal").classList.remove("show");
+  $("#quit-modal").classList.add("show");
+  $("#btn-quit-cancel").focus();
+});
+$("#btn-quit-cancel").addEventListener("click", () => {
+  $("#quit-modal").classList.remove("show");
+  if (round?.quitDuringCountdown) {
+    round.quitDuringCountdown = false;
+    round.paused = false;
+    startCountdown();
+  } else {
+    resumeRound();
+  }
+  $("#btn-quit").focus();
+});
+$("#btn-quit-confirm").addEventListener("click", abandonRound);
+
+$("#qcard").addEventListener("pointerdown", event => {
+  if (!round?.feedbackPending) return;
+  if (advanceFeedback()) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+});
+
+for (const button of [$("#btn-sound"), $("#btn-play-sound")]) {
+  button.addEventListener("click", () => setSound(!soundEnabled, true));
+}
+$("#btn-help").addEventListener("click", () => {
+  $("#help-modal").classList.add("show");
+  $("#btn-help-close").focus();
+});
+$("#btn-help-close").addEventListener("click", () => {
+  $("#help-modal").classList.remove("show");
+  $("#btn-help").focus();
+});
+$("#help-modal").addEventListener("pointerdown", event => {
+  if (event.target === $("#help-modal")) $("#btn-help-close").click();
+});
+
+document.addEventListener("keydown", e => {
+  if ($("#help-modal").classList.contains("show")) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      $("#btn-help-close").click();
+    }
+    return;
+  }
+  if ($("#quit-modal").classList.contains("show")) {
+    if (e.key === "Escape") $("#btn-quit-cancel").click();
+    return;
+  }
+  if ($("#pause-modal").classList.contains("show")) {
+    if (e.key === "Escape") $("#btn-resume").click();
+    return;
+  }
+  if (!$("#scr-play").classList.contains("active") || !round || round.over) return;
+  if (round.paused) return;
+  if (round.locked && round.feedbackPending) {
+    const isAdvanceKey = !e.metaKey && !e.ctrlKey && !e.altKey &&
+      (e.key === "Enter" || e.key === " " || e.key.toLowerCase() === "p" || /^\d$/.test(e.key));
+    if (isAdvanceKey) {
+      e.preventDefault();
+      advanceFeedback();
+    }
+    return;
+  }
+  if (e.key === "Escape") {
+    e.preventDefault();
+    $("#btn-pause").click();
+    return;
+  }
+  if (e.key.toLowerCase() === "p") {
+    e.preventDefault();
+    passQuestion();
+    return;
+  }
+  if (["1", "2", "3", "4"].includes(e.key)) {
+    const btns = $("#options").querySelectorAll("button");
+    const b = btns[parseInt(e.key, 10) - 1];
+    if (b && !b.disabled) submitAnswer(parseInt(b.dataset.v, 10), b);
+  }
+});
+
+// ---------- End of round / results ----------
+function snapshot() {
+  const attempted = round.correct + round.wrong;
+  return {
+    name: cfg.names[round.player],
+    score: round.score,
+    correct: round.correct,
+    wrong: round.wrong,
+    passed: round.passed,
+    bestStreak: round.bestStreak,
+    accuracy: attempted ? Math.round(100 * round.correct / attempted) : 0,
+    qpm: Math.round(10 * attempted / (cfg.duration / 60)) / 10,
+    counts: round.counts,
+    history: round.history.slice()
+  };
+}
+function endRound() {
+  if (round.over) return;
+  round.over = true;
+  clearInterval(timerId);
+  if (round.advanceId) clearTimeout(round.advanceId);
+  playSound("end");
+  const result = snapshot();
+  if (activeChallenge && cfg.players === 1) {
+    const today = new Date().toISOString().slice(0, 10);
+    if (roundSeed === hashSeed(`math-sprint-daily-${today}`)) {
+      try { localStorage.setItem(`mathsprint_daily_${today}`, String(result.score)); } catch (e) {}
+    }
+  }
+  if (cfg.players === 2 && round.player === 0) {
+    p1Result = result;
+    $("#handoff-title").textContent = "Pass to " + cfg.names[1];
+    $("#handoff-text").textContent = cfg.names[0] + " scored… well, that's a secret for now. Same questions, same clock. Ready?";
+    setTimeout(() => showScreen("#scr-handoff"), 600);
+  } else if (cfg.players === 2) {
+    setTimeout(() => showCompare(p1Result, result), 600);
+  } else {
+    setTimeout(() => showSolo(result), 600);
+  }
+}
+
+function opRows(counts, operations = cfg.ops) {
+  let rows = "";
+  for (const op of operations) {
+    const s = counts[op];
+    if (!s) continue;
+    const total = s.c + s.w + s.p;
+    if (!total) continue;
+    rows += `<tr><td>${OP_LABEL[op]}</td><td>${s.c}</td><td>${s.w}</td><td>${s.p}</td></tr>`;
+  }
+  return rows;
+}
+
+function saveLearningHistory(history) {
+  if (!history?.length) return;
+  try {
+    const previous = JSON.parse(localStorage.getItem("mathsprint_learning_history") || "[]");
+    const dated = history.map(item => ({ ...item, date: new Date().toISOString().slice(0, 10) }));
+    localStorage.setItem("mathsprint_learning_history", JSON.stringify(previous.concat(dated).slice(-500)));
+  } catch (e) {}
+}
+
+function getLearningHistory(fallback = []) {
+  try {
+    const stored = JSON.parse(localStorage.getItem("mathsprint_learning_history") || "[]");
+    return stored.length ? stored : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function renderLearning(players, persist) {
+  const current = players.flatMap(player =>
+    (player.history || []).map(item => ({ ...item, player: player.name }))
+  );
+  if (persist) saveLearningHistory(current);
+  const longTerm = getLearningHistory(current);
+  const buckets = {};
+  for (const item of longTerm) {
+    const bucket = buckets[item.op] ||= { attempts: 0, correct: 0, correctMs: 0 };
+    bucket.attempts++;
+    if (item.outcome === "correct") {
+      bucket.correct++;
+      bucket.correctMs += item.answerMs;
+    }
+  }
+  const ranked = Object.entries(buckets).map(([op, data]) => ({
+    op,
+    ...data,
+    accuracy: data.attempts ? data.correct / data.attempts : 0,
+    avgMs: data.correct ? data.correctMs / data.correct : Infinity
+  }));
+  const weakest = ranked.slice().sort((a, b) => a.accuracy - b.accuracy || b.attempts - a.attempts)[0];
+  const fastest = ranked.filter(item => Number.isFinite(item.avgMs)).sort((a, b) => a.avgMs - b.avgMs)[0];
+  if (!ranked.length) {
+    $("#insight-lead").textContent = "No pattern yet.";
+    $("#insight-copy").textContent = "Answer a few questions and your strengths will appear here.";
+  } else if (weakest && weakest.accuracy < 0.8) {
+    $("#insight-lead").textContent = `Focus on ${OP_LABEL[weakest.op].toLowerCase()}.`;
+    $("#insight-copy").textContent =
+      `${Math.round(weakest.accuracy * 100)}% accuracy across ${weakest.attempts} attempt${weakest.attempts === 1 ? "" : "s"}.` +
+      (fastest ? ` Your quickest operation is ${OP_LABEL[fastest.op].toLowerCase()} at ${(fastest.avgMs / 1000).toFixed(1)}s.` : "");
+  } else {
+    $("#insight-lead").textContent = fastest ? `${OP_LABEL[fastest.op]} is your fastest.` : "Accuracy is looking strong.";
+    $("#insight-copy").textContent = fastest
+      ? `Average correct response: ${(fastest.avgMs / 1000).toFixed(1)}s. Your tracked operations are all at 80% accuracy or better.`
+      : "Keep playing to build a more detailed pattern.";
+  }
+
+  const list = $("#miss-list");
+  list.replaceChildren();
+  const misses = current.filter(item => item.outcome !== "correct");
+  if (!misses.length) {
+    const perfect = document.createElement("div");
+    perfect.className = "perfect-review";
+    perfect.textContent = current.length ? "No misses. Clean round." : "No question history for this result.";
+    list.appendChild(perfect);
+    return;
+  }
+  for (const item of misses.slice(0, 10)) {
+    const row = document.createElement("div");
+    row.className = "miss-row";
+    const main = document.createElement("div");
+    const question = document.createElement("div");
+    question.className = "miss-question";
+    question.textContent = `${item.a} ${OP_SYMBOL[item.op]} ${item.b} = ${item.correctAnswer}`;
+    const answer = document.createElement("div");
+    answer.className = "miss-answer";
+    const playerPrefix = players.length > 1 ? `${item.player} · ` : "";
+    answer.textContent = item.outcome === "passed"
+      ? `${playerPrefix}Passed`
+      : `${playerPrefix}Answered ${item.given}`;
+    const time = document.createElement("div");
+    time.className = "miss-time";
+    time.textContent = `${(item.answerMs / 1000).toFixed(1)}s`;
+    main.append(question, answer);
+    row.append(main, time);
+    list.appendChild(row);
+  }
+  if (misses.length > 10) {
+    const more = document.createElement("div");
+    more.className = "insight-copy";
+    more.textContent = `And ${misses.length - 10} more miss${misses.length - 10 === 1 ? "" : "es"}.`;
+    list.appendChild(more);
+  }
+}
+
+// Bridge to math-sprint-cloud.js. That module is optional: when Firebase is not
+// configured nothing listens and this is a no-op.
+function emitResults(detail) {
+  document.dispatchEvent(new CustomEvent("mathsprint:results", { detail }));
+}
+
+function showSolo(r, persist = true, operations = cfg.ops, game = currentGameMeta()) {
+  $("#results-empty").style.display = "none";
+  $("#results-content").style.display = "block";
+  $("#res-title").textContent = "Round complete";
+  $("#winner").style.display = "none";
+  $("#res-p1").classList.add("solo");
+  $("#res-p2").style.display = "none";
+  $("#res-versus").style.display = "none";
+  $("#res-p1-name").textContent = r.name === "Player 1" ? "Your score" : r.name;
+  $("#res-p1-badge").textContent = initials(r.name);
+  $("#res-p1-score").textContent = fmtScore(r.score);
+  $("#res-p1-stats").textContent = `${r.accuracy}% accuracy · ${r.correct} correct · ${r.bestStreak} best streak`;
+  renderGameMeta(game);
+  $("#res-score").textContent = r.score;
+  $("#res-sub").textContent = `${r.correct} correct · ${r.wrong} wrong · ${r.passed} passed · ${r.accuracy}% accuracy · ${r.qpm} answers/min · best streak ${r.bestStreak}`;
+  $("#res-table").innerHTML = `<tr><th>Operation</th><th>Correct</th><th>Wrong</th><th>Passed</th></tr>` + opRows(r.counts, operations);
+  renderLearning([{ name: r.name, history: r.history || [] }], persist);
+  const ranked = game.ranked !== false;
+  $("#practice-note").textContent = game.practice
+    ? "Practice round — nothing here counts towards your high scores or the leaderboard."
+    : "Head to head — solo rounds are the ones that count towards high scores and the leaderboard.";
+  $("#practice-note").style.display = ranked ? "none" : "block";
+  // The score boards are cloud-only now; the Supabase module owns showing them
+  // (and the "new personal best" banner) once the round is recorded.
+  $("#newbest").style.display = "none";
+  if (persist) {
+    saveLatest({ appVersion: 3, type: "solo", result: r, operations: operations.slice(), game, seed: roundSeed });
+  }
+  emitResults({ solo: true, persist, result: r, game });
+  showScreen("#scr-results");
+}
+
+function showCompare(r1, r2, persist = true, game = currentGameMeta()) {
+  $("#results-empty").style.display = "none";
+  $("#results-content").style.display = "block";
+  $("#res-title").textContent = "Head to head";
+  $("#newbest").style.display = "none";
+  // Head to head is never ranked; the note explains why nothing was saved.
+  $("#practice-note").style.display = "block";
+  $("#res-p1").classList.remove("solo");
+  $("#res-p2").style.display = "block";
+  $("#res-versus").style.display = "block";
+  $("#res-p1-name").textContent = r1.name;
+  $("#res-p1-badge").textContent = initials(r1.name);
+  $("#res-p1-score").textContent = fmtScore(r1.score);
+  $("#res-p1-stats").textContent = `${r1.accuracy}% accuracy · ${r1.correct} correct · ${r1.bestStreak} streak`;
+  $("#res-p2-name").textContent = r2.name;
+  $("#res-p2-badge").textContent = initials(r2.name);
+  $("#res-p2-score").textContent = fmtScore(r2.score);
+  $("#res-p2-stats").textContent = `${r2.accuracy}% accuracy · ${r2.correct} correct · ${r2.bestStreak} streak`;
+  renderGameMeta(game);
+  const w = $("#winner");
+  w.style.display = "block";
+  if (r1.score > r2.score) w.textContent = `🏆 ${r1.name} wins!`;
+  else if (r2.score > r1.score) w.textContent = `🏆 ${r2.name} wins!`;
+  else w.textContent = "🤝 It's a tie!";
+  $("#res-score").textContent = `${r1.score} — ${r2.score}`;
+  $("#res-sub").textContent = `${r1.name} vs ${r2.name} · identical questions`;
+  const table = $("#res-table");
+  table.replaceChildren();
+  const addRow = (values, header = false) => {
+    const tr = document.createElement("tr");
+    values.forEach(value => {
+      const cell = document.createElement(header ? "th" : "td");
+      cell.textContent = value;
+      tr.appendChild(cell);
+    });
+    table.appendChild(tr);
+  };
+  addRow(["", r1.name, r2.name], true);
+  addRow(["Score", r1.score, r2.score]);
+  addRow(["Correct", r1.correct, r2.correct]);
+  addRow(["Wrong", r1.wrong, r2.wrong]);
+  addRow(["Passed", r1.passed, r2.passed]);
+  addRow(["Accuracy", `${r1.accuracy}%`, `${r2.accuracy}%`]);
+  addRow(["Best streak", r1.bestStreak, r2.bestStreak]);
+  renderLearning([
+    { name: r1.name, history: r1.history || [] },
+    { name: r2.name, history: r2.history || [] }
+  ], persist);
+  if (persist) saveLatest({ appVersion: 3, type: "compare", r1, r2, game, seed: roundSeed });
+  emitResults({ solo: false, persist, result: null, game });
+  showScreen("#scr-results");
+}
+
+function openResults() {
+  if (!latestResult) {
+    $("#results-empty").style.display = "block";
+    $("#results-content").style.display = "none";
+    $("#res-title").textContent = "Results";
+    emitResults({ solo: false, persist: false, result: null, game: null });
+    showScreen("#scr-results");
+    return;
+  }
+  if (latestResult.type === "solo") {
+    showSolo(
+      latestResult.result,
+      false,
+      latestResult.operations || Object.keys(latestResult.result.counts),
+      latestResult.game || currentGameMeta()
+    );
+  } else {
+    showCompare(latestResult.r1, latestResult.r2, false, latestResult.game || currentGameMeta());
+  }
+}
+
+
+// ---------- Seeded challenges ----------
+function encodeChallenge(payload) {
+  const bytes = new TextEncoder().encode(JSON.stringify(payload));
+  let binary = "";
+  bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function decodeChallenge(value) {
+  const base64 = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64 + "=".repeat((4 - base64.length % 4) % 4);
+  const binary = atob(padded);
+  const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+function challengeTarget(result) {
+  if (!result) return null;
+  if (result.type === "solo") return { name: result.result.name, score: result.result.score };
+  return result.r1.score >= result.r2.score
+    ? { name: result.r1.name, score: result.r1.score }
+    : { name: result.r2.name, score: result.r2.score };
+}
+
+function challengeUrl(seed, game, result = null) {
+  const url = new URL(location.href);
+  url.search = "";
+  url.hash = "";
+  const target = challengeTarget(result);
+  url.searchParams.set("c", encodeChallenge({
+    v: CHALLENGE_VERSION,
+    seed: seed >>> 0,
+    duration: game.duration,
+    difficulty: game.difficulty,
+    operations: ["add", "sub", "mul", "div"],
+    mode: "mc",
+    target
+  }));
+  return url.toString();
+}
+
+async function copyText(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.style.position = "fixed";
+  area.style.opacity = "0";
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand("copy");
+  area.remove();
+}
+
+$("#btn-share").addEventListener("click", async () => {
+  if (!latestResult) return;
+  if (!Number.isInteger(latestResult.seed)) {
+    $("#share-status").textContent = "Play a round first to create a challenge link.";
+    return;
+  }
+  try {
+    await copyText(challengeUrl(latestResult.seed, latestResult.game || currentGameMeta(), latestResult));
+    $("#share-status").textContent = "Challenge link copied — same settings, same questions.";
+  } catch (e) {
+    $("#share-status").textContent = "Could not copy the link. Try again.";
+  }
+});
+
+function loadChallengeFromUrl() {
+  const encoded = new URL(location.href).searchParams.get("c");
+  if (!encoded) return;
+  try {
+    const challenge = decodeChallenge(encoded);
+    if (challenge.v !== CHALLENGE_VERSION || !Number.isInteger(challenge.seed)) throw new Error("Unsupported challenge");
+    const game = {
+      players: 1,
+      duration: ROUND_SECONDS,
+      difficulty: ["easy", "medium", "hard"].includes(challenge.difficulty) ? challenge.difficulty : "easy",
+      operations: ["add", "sub", "mul", "div"],
+      mode: "mc"
+    };
+    applyGameMeta(game);
+    pendingChallengeSeed = challenge.seed >>> 0;
+    $("#challenge-note").textContent = Number.isFinite(challenge.target?.score)
+      ? `${challenge.target.name || "A player"} scored ${challenge.target.score}. Press Play to face the exact same questions.`
+      : "Challenge loaded. Press Play to face the exact same questions.";
+    $("#challenge-note").classList.add("show");
+  } catch (e) {
+    $("#challenge-note").textContent = "This challenge link is invalid or out of date.";
+    $("#challenge-note").classList.add("show");
+  }
+}
+
+// ---------- Navigation ----------
+$("#btn-again").addEventListener("click", () => {
+  // Replay the same kind of round the player just finished.
+  launchGame(null, false, lastPractice);
+});
+$("#btn-settings").addEventListener("click", () => showScreen("#scr-setup"));
+document.querySelectorAll("[data-nav]").forEach(button => {
+  button.addEventListener("click", () => {
+    if (button.dataset.nav === "#scr-results") openResults();
+    else {
+      if (button.dataset.nav === "#scr-home") updateHome();
+      showScreen(button.dataset.nav);
+    }
+  });
+});
+let savedSound = true;
+try {
+  const storedSound = localStorage.getItem("mathsprint_sound");
+  savedSound = storedSound === null ? true : storedSound === "1";
+} catch (e) {}
+setSound(savedSound);
+$("#foot-year").textContent = new Date().getFullYear();
+updateHome();
+loadChallengeFromUrl();
+</script>
+<script type="module" src="math-sprint-supabase.js"></script>
+</body>
+</html>

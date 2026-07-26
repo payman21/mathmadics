@@ -1,0 +1,18 @@
+# Cloudflare Worker (static assets only) that serves MathMADics at
+# https://www.mathmadics.com/.
+#
+# This makes `wrangler deploy` update the EXISTING Worker named "mathmadicsapp"
+# (originally created in the Cloudflare dashboard) — it does not create a new
+# one. Because no routes/custom-domains are declared here, the custom domain
+# already attached to that Worker in the dashboard (www.mathmadics.com) is left
+# untouched.
+#
+# There is no Worker script: the site is pure static files, so there is no
+# `main` entry point. `wrangler deploy` uploads everything under ./dist and
+# serves it directly (index.html is served at "/").
+
+name = "mathmadicsapp"
+compatibility_date = "2025-01-01"
+
+[assets]
+directory = "./dist"

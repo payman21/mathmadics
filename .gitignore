@@ -1,0 +1,29 @@
+# --- Generated / deploy output ---------------------------------------------
+# dist/ is rebuilt from the root source files by deploy.sh, so it is not source.
+# (Delete this line if you'd rather commit the built assets as well.)
+dist/
+
+# --- Secrets — NEVER commit -------------------------------------------------
+# OAuth client secrets, service-role keys, private keys, env files.
+# NOTE: the Supabase anon/publishable key in supabase-config.js is NOT a secret
+# and is intentionally committed — it is safe in the browser and in a public repo.
+client_secret_*.json
+*.pem
+*.key
+.env
+.env.*
+
+# --- Legacy / backups (contain old secrets; keep out of the repo) ----------
+_archived/
+
+# --- Local tooling caches ---------------------------------------------------
+.wrangler/
+.deploy-config
+node_modules/
+
+# --- Test / debug artifacts -------------------------------------------------
+.playwright-mcp/
+*-debug.log
+
+# --- OS noise ---------------------------------------------------------------
+.DS_Store
